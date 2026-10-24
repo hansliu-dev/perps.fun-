@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* Light only: no dark variant and no toggle. */
+@theme {
+  --color-bg: #f6f7f9;
+  --color-panel: #ffffff;
+  --color-sunken: #f0f2f5;
+  --color-line: #e2e5ea;
+  --color-ink: #111827;
+  --color-muted: #6b7280;
+  --color-accent: #4d7c0f;
+  --color-long: #16a34a;
+  --color-short: #dc2626;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  color-scheme: light;
+}
+
+@layer components {
+  .input {
+    @apply rounded-md border border-line bg-panel px-2.5 py-1.5 text-sm outline-none focus:border-accent;
+  }
+}
+
+/* Motion: pressed buttons, popups sliding in, a ticking check, a shaking error, rows fading out. */
+button:not(:disabled),
+a.rounded-md {
+  transition: transform 120ms ease, background-color 150ms ease, opacity 150ms ease, box-shadow 150ms ease;
+}
+button:not(:disabled):active,
+a.rounded-md:active {
+  transform: scale(0.96);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateX(-24px); }
+}
+@keyframes toast-pop {
+  0% { transform: scale(0.4); }
+  70% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+@keyframes toast-tick {
+  from { stroke-dashoffset: 14; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes toast-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+@keyframes row-flash {
+  from { background-color: color-mix(in srgb, var(--color-accent) 18%, transparent); }
+  to { background-color: transparent; }
+}
+.toast-in { animation: toast-in 220ms cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+.toast-out { animation: toast-out 240ms ease-in both; }
+.toast-pop { animation: toast-pop 320ms ease-out both; }
+.toast-tick { stroke-dasharray: 14; animation: toast-tick 300ms 120ms ease-out both; }
+.toast-shake { animation: toast-shake 300ms ease-in-out 2; }
+.row-busy { opacity: 0.5; transition: opacity 200ms ease; }
+.row-new { animation: row-flash 1.2s ease-out; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; }
+}
+
+/* Amount slider: filled track up to the thumb, larger thumb that grows while dragging. */
+.amount-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--color-accent) var(--fill, 0%), var(--color-line) var(--fill, 0%));
+  cursor: pointer;
+}
+.amount-slider:disabled { cursor: not-allowed; opacity: 0.5; }
+.amount-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-panel);
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+  transition: transform 120ms ease;
+}
+.amount-slider:active::-webkit-slider-thumb { transform: scale(1.2); }
+.amount-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-panel);
+  border: 2px solid var(--color-accent);
+}
+.amount-slider:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }

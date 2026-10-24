@@ -1,0 +1,32 @@
+rules_version = '2';
+// All writes go through Cloud Functions (Admin SDK bypasses these rules). Clients only read.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+
+    // Public profile and social data.
+    match /users/{uid} { allow read: if true; allow write: if false; }
+    match /trades/{id} { allow read: if true; allow write: if false; }
+    match /theses/{id} { allow read: if true; allow write: if false; }
+    match /leaderboards/{id} { allow read: if true; allow write: if false; }
+    // Open positions (side, size, entry, margin) for live PnL on profiles and discovery.
+    match /snapshots/{uid} { allow read: if true; allow write: if false; }
+
+    // A follow is visible to the follower and the leader.
+    match /follows/{id} {
+      allow read: if signedIn() && (resource.data.followerUid == request.auth.uid || resource.data.leaderUid == request.auth.uid);
+      allow write: if false;
+    }
+    match /copyExecutions/{id} {
+      allow read: if signedIn() && resource.data.followerUid == request.auth.uid;
+      allow write: if false;
+    }
+    match /withdrawals/{id} {
+      allow read: if signedIn() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
+    // Server-only: handles, leaders, locks, syncRequests.
+    match /{document=**} { allow read, write: if false; }
+  }
+}

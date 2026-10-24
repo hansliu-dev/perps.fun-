@@ -1,0 +1,24 @@
+{
+  "indexes": [
+    { "collectionGroup": "trades", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "symbol", "order": "ASCENDING" }, { "fieldPath": "action", "order": "ASCENDING" },
+      { "fieldPath": "uid", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "DESCENDING" } ] },
+    { "collectionGroup": "trades", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "uid", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "DESCENDING" } ] },
+    { "collectionGroup": "theses", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "uid", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "DESCENDING" } ] },
+    { "collectionGroup": "theses", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "symbol", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "DESCENDING" } ] },
+    { "collectionGroup": "follows", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "leaderUid", "order": "ASCENDING" }, { "fieldPath": "active", "order": "ASCENDING" } ] },
+    { "collectionGroup": "follows", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "followerUid", "order": "ASCENDING" }, { "fieldPath": "active", "order": "ASCENDING" } ] },
+    { "collectionGroup": "copyExecutions", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "followerUid", "order": "ASCENDING" }, { "fieldPath": "ts", "order": "DESCENDING" } ] },
+    { "collectionGroup": "withdrawals", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "uid", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "DESCENDING" } ] },
+    { "collectionGroup": "withdrawals", "queryScope": "COLLECTION", "fields": [
+      { "fieldPath": "uid", "order": "ASCENDING" }, { "fieldPath": "createdAt", "order": "ASCENDING" } ] }
+  ],
+  "fieldOverrides": []
+}

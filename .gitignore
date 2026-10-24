@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env*
+*.key.json
+secrets/
+!.env.example
+functions/lib/

@@ -1,0 +1,9 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Thesis snapshots are public; only the backend uploads.
+    match /theses/{uid}/{file} { allow read: if true; allow write: if false; }
+    match /avatars/{uid}/{file} { allow read: if true; allow write: if false; }
+    match /{path=**} { allow read, write: if false; }
+  }
+}
